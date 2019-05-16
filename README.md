@@ -56,16 +56,22 @@ curl -X POST http://localhost:8080/slack/channels/general/messages -d "text=MY_M
 
 ## Set up Event API
 
-1. Deploy this app. Or you can boot the app localy and use [ngrok](https://ngrok.com/).  
-Below steps need public URL for this app.
-1. Go to <https://api.slack.com/apps>
-1. Select your app
-1. Open `Event Subscriptions` from left menu
-1. Enable Events
-1. Input `Request URL`. It might be like `<YOUR APP ROOT>/slack/event_endpoint`.
-    * Slack will send verification request to your app.
-1. Add events you need to subscribe.
-    * e.g. `message.channels`
-    * You may have to add required scope.
-1. Add `App Unfurl Domains` if you need.
-1. Click `Save Changes`.
+1. Open your app settings
+    1. Deploy this app. Or you can boot the app localy and use [ngrok](https://ngrok.com/).  
+    Event API needs public URL for this app.
+    1. Go to <https://api.slack.com/apps>
+    1. Select your app
+1. Set up your app
+    1. Open `Event Subscriptions` from left menu
+    1. Enable Events
+    1. Input `Request URL`. It might be like `<YOUR APP ROOT>/slack/event_endpoint`.
+        * Slack will send verification request to your app.
+    1. Add events you need to subscribe.
+        * e.g. `message.channels`
+        * You may have to add required scope.
+    1. Add `App Unfurl Domains` if you need.
+    1. Click `Save Changes`.
+1. Prepare signature verification
+    1. Open `Basic Information` from left menu
+    1. Copy `Signing Secret`
+    1. Edit `slack.go` and replace `<PUT YOUR SIGNING SECRET HERE>` with signing secret above.

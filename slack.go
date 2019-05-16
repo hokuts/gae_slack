@@ -2,6 +2,9 @@ package slack
 
 import (
 	"bytes"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -14,6 +17,7 @@ import (
 )
 
 const accessToken = "<PUT YOUR ACCESS TOKEN HERE>"
+const signingSecret = "<PUT YOUR SIGNING SECRET HERE>"
 
 func init() {
 	r := mux.NewRouter()
@@ -83,7 +87,19 @@ func handleEvent(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 		return
 	}
+
 	reqBody := buf.String()
+
+	// Signature verification
+	hm := hmac.New(sha256.New, []byte(signingSecret))
+	hm.Write([]byte("v0:" + r.Header.Get("X-Slack-Request-Timestamp") + ":" + reqBody))
+	sig := "v0=" + hex.EncodeToString(hm.Sum(nil))
+	if sig != r.Header.Get("X-Slack-Signature") {
+		status := http.StatusBadRequest
+		w.WriteHeader(status)
+		fmt.Fprintf(w, http.StatusText(status))
+		return
+	}
 
 	// You must respond to `url_verification` event
 	_type := gjson.Get(reqBody, "type")
