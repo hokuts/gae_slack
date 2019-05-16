@@ -21,10 +21,16 @@ const signingSecret = "<PUT YOUR SIGNING SECRET HERE>"
 
 func init() {
 	r := mux.NewRouter()
-	r.HandleFunc("/slack/channels", listChannel).Methods("GET")
-	r.HandleFunc("/slack/channels", createChannel).Methods("POST")
-	r.HandleFunc("/slack/channels/{channel}/messages", postMessage).Methods("POST")
-	r.HandleFunc("/slack/event_endpoint", handleEvent).Methods("POST")
+	s := r.PathPrefix("/slack").Subrouter()
+
+	ch := s.PathPrefix("/channels").Subrouter()
+	ch.HandleFunc("", createChannel).Methods("POST")
+	ch.HandleFunc("", listChannel).Methods("GET")
+	s.HandleFunc("/{channel}/messages", postMessage).Methods("POST")
+
+	evt := s.PathPrefix("/event_endpoint").Subrouter()
+	evt.HandleFunc("", handleEvent).Methods("POST")
+
 	http.Handle("/", r)
 }
 
