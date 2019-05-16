@@ -65,7 +65,7 @@ Event API needs public URL for this app.
 1. Set up your app
     1. Open `Event Subscriptions` from left menu
     1. Enable Events
-    1. Input `Request URL`. It might be like `<YOUR APP ROOT>/slack/event_endpoint`.
+    1. Input `Request URL`. It might be like `<YOUR APP ROOT>/slack/event`.
         * Slack will send verification request to your app.
     1. Add events you need to subscribe.
         * e.g. `message.channels`

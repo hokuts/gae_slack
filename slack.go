@@ -28,7 +28,7 @@ func init() {
 	ch.HandleFunc("", listChannel).Methods("GET")
 	s.HandleFunc("/{channel}/messages", postMessage).Methods("POST")
 
-	evt := s.PathPrefix("/event_endpoint").Subrouter()
+	evt := s.PathPrefix("/event").Subrouter()
 	evt.HandleFunc("", handleEvent).Methods("POST")
 
 	http.Handle("/", r)
