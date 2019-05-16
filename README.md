@@ -56,9 +56,10 @@ curl -X POST http://localhost:8080/slack/channels/general/messages -d "text=MY_M
 
 ## Set up Event API
 
+1. Deploy this app.  
+Or you can boot the app localy and use [ngrok](https://ngrok.com/).  
+Event API needs public URL for this app.
 1. Open your app settings
-    1. Deploy this app. Or you can boot the app localy and use [ngrok](https://ngrok.com/).  
-    Event API needs public URL for this app.
     1. Go to <https://api.slack.com/apps>
     1. Select your app
 1. Set up your app
