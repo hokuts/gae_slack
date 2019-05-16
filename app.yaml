@@ -7,7 +7,7 @@ handlers:
   script: _go_app
 
 env_variables:
-  # for Channel API
+  # for Web API
   ACCESS_TOKEN: <PUT YOUR ACCESS TOKEN HERE>
   # for OAuth
   REDIRECT_URL: <PUT YOUR REDIRECT URL HERE>

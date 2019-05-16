@@ -1,6 +1,6 @@
 # GAE Slack API Example
 
-Small example of slack API with GAE/Go
+Small example of slack API using bot with GAE/Go
 
 ## Environment
 
