@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/tidwall/gjson"
@@ -15,9 +16,6 @@ import (
 	"google.golang.org/appengine/log"
 	"google.golang.org/appengine/urlfetch"
 )
-
-const accessToken = "<PUT YOUR ACCESS TOKEN HERE>"
-const signingSecret = "<PUT YOUR SIGNING SECRET HERE>"
 
 func init() {
 	r := mux.NewRouter()
@@ -42,7 +40,7 @@ func listChannel(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 	client := urlfetch.Client(ctx)
 	params := url.Values{
-		"token": {accessToken},
+		"token": {os.Getenv("ACCESS_TOKEN")},
 	}
 	res, err := client.Get("https://slack.com/api/channels.list?" + params.Encode())
 	if err != nil {
@@ -58,7 +56,7 @@ func createChannel(w http.ResponseWriter, r *http.Request) {
 	client := urlfetch.Client(ctx)
 	name := r.PostFormValue("name")
 	params := url.Values{
-		"token": {accessToken},
+		"token": {os.Getenv("ACCESS_TOKEN")},
 		"name":  {name},
 	}
 	resp, err := client.PostForm("https://slack.com/api/channels.create", params)
@@ -77,7 +75,7 @@ func postMessage(w http.ResponseWriter, r *http.Request) {
 	channel := vars["channel"]
 	text := r.PostFormValue("text")
 	params := url.Values{
-		"token":   {accessToken},
+		"token":   {os.Getenv("ACCESS_TOKEN")},
 		"channel": {channel},
 		"text":    {text},
 	}
@@ -123,7 +121,7 @@ func handleEvent(w http.ResponseWriter, r *http.Request) {
 	reqBody := buf.String()
 
 	// Signature verification
-	hm := hmac.New(sha256.New, []byte(signingSecret))
+	hm := hmac.New(sha256.New, []byte(os.Getenv("SIGNING_SECRET")))
 	hm.Write([]byte("v0:" + r.Header.Get("X-Slack-Request-Timestamp") + ":" + reqBody))
 	sig := "v0=" + hex.EncodeToString(hm.Sum(nil))
 	if sig != r.Header.Get("X-Slack-Signature") {

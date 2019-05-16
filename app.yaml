@@ -5,3 +5,14 @@ api_version: go1.9
 handlers:
 - url: /.*
   script: _go_app
+
+env_variables:
+  # for Channel API
+  ACCESS_TOKEN: <PUT YOUR ACCESS TOKEN HERE>
+  # for OAuth
+  REDIRECT_URL: <PUT YOUR REDIRECT URL HERE>
+  CLIENT_ID: <PUT YOUR CLIENT ID HERE>
+  CLIENT_SECRET: <PUT YOUR CLIENT SECRET HERE>
+  WORKSPACE_ID: <PUT YOUR WORKSPACE ID HERE> # Not Required
+  # for Event API
+  SIGNING_SECRET: <PUT YOUR SIGNING SECRET HERE>

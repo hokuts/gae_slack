@@ -4,14 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"os"
 
 	"golang.org/x/oauth2"
 )
-
-const slackAppClientID = "<PUT YOUR CLIENT ID HERE>"
-const slackAppClientSecret = "<PUT YOUR CLIENT SECRET HERE>"
-const redirectURL = "<PUT YOUR REDIRECT URL HERE>"
-const slackWorkspaceID = ""
 
 func getSlackAuthURL(ctx context.Context) (string, error) {
 	stateString := generateState()
@@ -42,20 +38,21 @@ func getSlackOAuthAccessToken(ctx context.Context, code string, stateString stri
 
 func slackOAuthConfig() *oauth2.Config {
 	var authURL string
+	slackWorkspaceID := os.Getenv("WORKSPACE_ID")
 	if slackWorkspaceID != "" {
 		authURL = "https://" + slackWorkspaceID + ".slack.com/oauth/authorize"
 	} else {
 		authURL = "https://slack.com/oauth/authorize"
 	}
 	return &oauth2.Config{
-		ClientID:     slackAppClientID,
-		ClientSecret: slackAppClientSecret,
+		ClientID:     os.Getenv("CLIENT_ID"),
+		ClientSecret: os.Getenv("CLIENT_SECRET"),
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  authURL,
 			TokenURL: "https://slack.com/api/oauth.access",
 		},
 		Scopes:      []string{"client"},
-		RedirectURL: redirectURL,
+		RedirectURL: os.Getenv("REDIRECT_URL"),
 	}
 }
 

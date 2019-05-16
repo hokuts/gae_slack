@@ -38,7 +38,7 @@ note: When you create channel via API, channel creator will not be the App bot, 
 
 ## Test local server
 
-Edit `slack.go` and replace `<PUT YOUR ACCESS TOKEN HERE>` with token above.
+Edit `app.yaml` and replace `<PUT YOUR ACCESS TOKEN HERE>` with token above.
 
 Boot local server
 
@@ -75,7 +75,7 @@ Event API needs public URL for this app.
 1. Prepare signature verification
     1. Open `Basic Information` from left menu
     1. Copy `Signing Secret`
-    1. Edit `slack.go` and replace `<PUT YOUR SIGNING SECRET HERE>` with signing secret above.
+    1. Edit `app.yaml` and replace `<PUT YOUR SIGNING SECRET HERE>` with signing secret above.
 
 ## Set up Slack OAuth
 
@@ -85,9 +85,15 @@ Event API needs public URL for this app.
 1. Get Client ID and Client Secret
     1. Open `Basic Information` from left menu
     1. Copy `Client ID` and `Client Secret`
-    1. Edit `slack_oauth.go` and resplace `<PUT YOUR CLIENT ID HERE>` and `<PUT YOUR CLIENT SECRET HERE>` with above
+    1. Edit `app.yaml` and resplace `<PUT YOUR CLIENT ID HERE>` and `<PUT YOUR CLIENT SECRET HERE>` with above.  
+    Make sure to set them as STRING. They may have to be in quotes, or they might be treated as numbers.
 1. Set Redirect URL
     1. Open `OAuth & Permissions` from left menu
     1. Input `Redirect URLs`. It might be like `http://localhost:8080/slack/oauth/token`.
     1. Click `Save URLs`
-    1. Edit `slack_oauth.go` and replace `<PUT YOUR REDIRECT URL HERE>` with same URL as above.
+    1. Edit `app.yaml` and replace `<PUT YOUR REDIRECT URL HERE>` with same URL as above.
+1. Optional: Set Workspace ID
+    1. Edit `app.yaml` and replace `<PUT YOUR WORKSPACE ID HERE>` with your slack workspace ID.  
+    If you do this, you will not need to select the Workspace through authorization flow.
+
+Now you can start authorization flow by accessing to <http://localhost:8080/slack/oauth/auth> with your web browser.
