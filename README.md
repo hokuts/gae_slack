@@ -76,3 +76,18 @@ Event API needs public URL for this app.
     1. Open `Basic Information` from left menu
     1. Copy `Signing Secret`
     1. Edit `slack.go` and replace `<PUT YOUR SIGNING SECRET HERE>` with signing secret above.
+
+## Set up Slack OAuth
+
+1. Open your app settings
+    1. Go to <https://api.slack.com/apps>
+    1. Select your app
+1. Get Client ID and Client Secret
+    1. Open `Basic Information` from left menu
+    1. Copy `Client ID` and `Client Secret`
+    1. Edit `slack_oauth.go` and resplace `<PUT YOUR CLIENT ID HERE>` and `<PUT YOUR CLIENT SECRET HERE>` with above
+1. Set Redirect URL
+    1. Open `OAuth & Permissions` from left menu
+    1. Input `Redirect URLs`. It might be like `http://localhost:8080/slack/oauth/token`.
+    1. Click `Save URLs`
+    1. Edit `slack_oauth.go` and replace `<PUT YOUR REDIRECT URL HERE>` with same URL as above.

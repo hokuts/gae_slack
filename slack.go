@@ -28,6 +28,10 @@ func init() {
 	ch.HandleFunc("", listChannel).Methods("GET")
 	s.HandleFunc("/{channel}/messages", postMessage).Methods("POST")
 
+	oauth := s.PathPrefix("/oauth").Subrouter()
+	oauth.HandleFunc("/auth", handleAuth).Methods("GET")
+	oauth.HandleFunc("/token", handleAccessToken).Methods("GET")
+
 	evt := s.PathPrefix("/event").Subrouter()
 	evt.HandleFunc("", handleEvent).Methods("POST")
 
@@ -85,6 +89,29 @@ func postMessage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "posted message to `%s`\nStatus=%d\n%q", channel, res.StatusCode, res.Body)
 }
 
+func handleAuth(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+	url, err := getSlackAuthURL(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, url, http.StatusMovedPermanently)
+}
+
+func handleAccessToken(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+	code := r.FormValue("code")
+	state := r.FormValue("state")
+	token, err := getSlackOAuthAccessToken(ctx, code, state)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprint(w, token)
+}
+
 func handleEvent(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 	buf := new(bytes.Buffer)
@@ -93,7 +120,6 @@ func handleEvent(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 		return
 	}
-
 	reqBody := buf.String()
 
 	// Signature verification
