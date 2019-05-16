@@ -1,6 +1,6 @@
 # GAE Slack API Example
 
-Small example of slack API with GAE/Go
+Small example of slack API using bot with GAE/Go
 
 ## Environment
 
@@ -33,7 +33,6 @@ go get github.com/tidwall/gjson
     1. Open `Install App` from left menu
     1. Copy `OAuth Access Token`
 
-note: You don't need to create a Bot User.  
 note: When you create channel via API, channel creator will not be the App bot, but the user who authorized the App.
 
 ## Test local server
@@ -97,3 +96,4 @@ Event API needs public URL for this app.
     If you do this, you will not need to select the Workspace through authorization flow.
 
 Now you can start authorization flow by accessing to <http://localhost:8080/slack/oauth/auth> with your web browser.
+At end of the flow, you will see granted access token in the web browser.
