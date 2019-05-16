@@ -95,5 +95,5 @@ Event API needs public URL for this app.
     1. Edit `app.yaml` and replace `<PUT YOUR WORKSPACE ID HERE>` with your slack workspace ID.  
     If you do this, you will not need to select the Workspace through authorization flow.
 
-Now you can start authorization flow by accessing to <http://localhost:8080/slack/oauth/auth> with your web browser.
+Now you can start authorization flow by accessing to <http://localhost:8080/slack/oauth/auth> with your web browser.  
 At end of the flow, you will see granted access token in the web browser.
