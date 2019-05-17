@@ -30,7 +30,7 @@ go get github.com/tidwall/gjson
     1. Click `Install your app to your workspace`
     1. Authorize your App
 1. Get access token
-    1. Open `Install App` from left menu
+    1. Open `OAuth & Permissions` from left menu
     1. Copy `OAuth Access Token`
 
 note: When you create channel via API, channel creator will not be the App bot, but the user who authorized the App.
